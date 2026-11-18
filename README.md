@@ -58,5 +58,6 @@ SIMPLE project contributors, link to this repository and the licence, and
 indicate any changes.
 For scholarly work, please also cite the accompanying SIMPLE paper.
 
-The related repositories license their software under Apache 2.0 and their
-NRF template data under CC BY 4.0; see their licence notices for the scope.
+The four software repositories use Apache 2.0 for code. The three analysis
+repositories use CC BY 4.0 for their NRF template data; see their licence notices
+for the scope.

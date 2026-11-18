@@ -5,6 +5,9 @@ This folder contains the demonstration dataset produced by
 All identifiers and samples are synthetic and correspond to no real person.
 The example lets you try SIMPLE without access to clinical recordings.
 
+To download the example, follow the
+[repository's download instructions](../README.md#download-and-open-the-files).
+
 ## Files
 
 The complete generated folder is supplied unchanged under
@@ -33,10 +36,11 @@ explains the fixed signal recipe.
 
 1. Obtain the [simple repository](https://github.com/simple-eeg/simple#before-you-begin) and
    follow its software setup instructions.
-2. Copy the contents of this dataset's `raw/` folder into `simple/data/raw/`.
+2. Create `simple/data/raw/` if needed, then copy the contents of this
+   dataset's `raw/` folder into it.
 3. Copy `dataset_list.csv` into `simple/data_lists/`, retaining its filename.
 4. Follow the [SIMPLE tutorial's numbered checkpoints](https://github.com/simple-eeg/simple#run-one-script-at-a-time),
-   starting with `step_1_proc_1_get_event_types.m`. Skip its “Create and copy the
+   starting with `step_1_proc_1_get_event_types.m`. Skip its “Get and copy the
    data” subsection, because you have already prepared the inputs. Complete the
    [response-template mapping](https://github.com/simple-eeg/simple#map-event-types-to-nrf-profiles)
    after Step 2.2 and before Step 2.3, as the tutorial explains.
