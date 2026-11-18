@@ -15,9 +15,7 @@ measurements and study variables, not EEG recordings.
   in [JASP](https://jasp-stats.org/) to inspect the saved work; inspecting the
   saved results does not require rerunning the analyses. Use a copy for new work.
 
-Both files retain their original names and contents. The CSV preserves more
-decimal places than JASP's embedded table: the numerical values agree to ten
-significant digits, with matching category labels and missing values.
+Both files retain their original names and contents.
 
 The [figure source-data guide](../figure-source-data/README.md) identifies the
 columns used in each relevant figure and points to the additional pooled tables
@@ -27,6 +25,14 @@ for Petal and NOCI-Prem.
 
 `subjectID` is the participant identifier. Keep it as text when importing the CSV
 so that leading zeros are preserved.
+
+An **epoch** is a short segment of EEG. Here, the **true-event epoch** contains
+the heel lance, and the **internal-reference epoch** comes from an earlier
+period in the same recording and channel, providing a comparison.
+
+**Quality-control (QC) features** describe signal properties used during manual
+screening. A **neurodynamic response function (NRF)** is a predefined response
+shape fitted to the EEG; its fitted magnitude quantifies the response.
 
 Measurement names beginning with `HL_BL_` refer to the internal-reference epoch;
 names beginning with `HL_ER_` refer to the true heel-lance event epoch. Each
@@ -41,10 +47,10 @@ definitions are given in the manuscript's Supplementary Table 5 and in the
 [Oxford QC calculations](https://github.com/simple-eeg/simple-oxford/blob/main/functions/quality_control_features.m).
 
 The four columns ending in `eNRF_mag` or `nNRF_mag` contain fitted response
-magnitudes in microvolts (µV). The e-NRF describes the early sensory response,
-and the n-NRF describes the later noxious-evoked response. These magnitudes are
-the `fglsCoef` values from the pooled NRF table; the stored NRF template vectors
-themselves are dimensionless.
+magnitudes in microvolts (µV), which can be positive or negative. The e-NRF
+describes the early sensory response, and the n-NRF describes the later
+noxious-evoked response. These magnitudes are the `fglsCoef` values from the
+pooled NRF table; the stored NRF template vectors themselves are dimensionless.
 
 | Study or analysis column | Meaning |
 | --- | --- |
@@ -65,9 +71,13 @@ for the other.
 All 104 rows are enabled by the saved JASP global filter. Individual analyses
 use the participants with the measurements they require. There are 99
 participants with current true-event measurements, including 72 asleep and
-27 awake. The comparison with the published retained set uses 82 participants.
+27 awake. The published-set analysis uses 82 participants.
 
 The CSV therefore supplies the retained QC values shown in main Figure 2,
 but not the excluded values also shown in Supplementary Figure 1. The
 [pooled Oxford QC table](../figure-source-data/data/oxford/pooled_screened_eeg_qc_features.csv)
 retains all 208 candidate items and their exclusion flags.
+
+The CSV preserves more decimal places than JASP's embedded table: the numerical
+values agree to ten significant digits, with matching category labels and
+missing values.

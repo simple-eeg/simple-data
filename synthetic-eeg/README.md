@@ -1,6 +1,6 @@
 # Synthetic EEG example
 
-This folder contains the existing demonstration dataset produced by
+This folder contains the demonstration dataset produced by
 [simple-synthetic-eeg-generator](https://github.com/simple-eeg/simple-synthetic-eeg-generator).
 All identifiers and samples are synthetic and correspond to no real person.
 The example lets you try SIMPLE without access to clinical recordings.
@@ -31,11 +31,15 @@ explains the fixed signal recipe.
 
 ## Use with SIMPLE
 
-1. Obtain the [simple repository](https://github.com/simple-eeg/simple) and
+1. Obtain the [simple repository](https://github.com/simple-eeg/simple#before-you-begin) and
    follow its software setup instructions.
 2. Copy the contents of this dataset's `raw/` folder into `simple/data/raw/`.
 3. Copy `dataset_list.csv` into `simple/data_lists/`, retaining its filename.
-4. Follow the [SIMPLE synthetic tutorial](https://github.com/simple-eeg/simple#synthetic-tutorial).
+4. Follow the [SIMPLE tutorial's numbered checkpoints](https://github.com/simple-eeg/simple#run-one-script-at-a-time),
+   starting with `step_1_proc_1_get_event_types.m`. Skip its “Create and copy the
+   data” subsection, because you have already prepared the inputs. Complete the
+   [response-template mapping](https://github.com/simple-eeg/simple#map-event-types-to-nrf-profiles)
+   after Step 2.2 and before Step 2.3, as the tutorial explains.
 
 The list's `path_raw` entries begin with `data/raw/`. They are relative to the
 `simple` checkout and become valid after copying the files as described above.

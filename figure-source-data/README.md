@@ -11,18 +11,29 @@ provide additional sources for Figure 4.
 
 ## Files
 
+An **epoch** is a segment of EEG around an event. An **item** is one event
+occurrence at one EEG channel. True-event epochs contain heel lance in Petal or
+venepuncture in NOCI-Prem. Internal-reference epochs contain EEG from before
+the true event, from the same recording and channel.
+
+**Quality-control (QC) features** describe properties of the signal used
+during manual review. A **neurodynamic response function (NRF)** is a
+predefined response shape fitted to the EEG; its fitted magnitude quantifies
+the response. The e-NRF represents the early sensory response, the n-NRF the
+later noxious-evoked response, and the p-NRF the preterm noxious response.
+
 | Dataset | File | Contents |
 | --- | --- | --- |
-| Oxford / Petal | [pooled_screened_eeg_qc_features.csv](data/oxford/pooled_screened_eeg_qc_features.csv) | Nine QC features for all 208 candidate event-channel items, with screening flags. |
+| Oxford / Petal | [pooled_screened_eeg_qc_features.csv](data/oxford/pooled_screened_eeg_qc_features.csv) | Nine QC features for all 208 candidate items, with screening flags. |
 | Oxford / Petal | [pooled_screened_eeg_nrf_features.csv](data/oxford/pooled_screened_eeg_nrf_features.csv) | NRF measurements for those items: 416 rows, because both e-NRF and n-NRF were fitted to each item. |
-| Strasbourg / NOCI-Prem | [pooled_screened_eeg_qc_features.csv](data/strasbourg/pooled_screened_eeg_qc_features.csv) | Nine QC features for all 78 candidate event-channel items, with screening flags. |
+| Strasbourg / NOCI-Prem | [pooled_screened_eeg_qc_features.csv](data/strasbourg/pooled_screened_eeg_qc_features.csv) | Nine QC features for all 78 candidate items, with screening flags. |
 | Strasbourg / NOCI-Prem | [pooled_screened_eeg_nrf_features.csv](data/strasbourg/pooled_screened_eeg_nrf_features.csv) | p-NRF measurements for those items: 78 rows. |
 
-“Screened” means that screening decisions have been added. Excluded rows
-remain in these four files. `Exclude` is a numeric flag: `0` means retained,
-and `1` means excluded. The Oxford tables contain nine excluded items; the
-Strasbourg tables contain one. Oxford's NRF table repeats each item's flag
-across its two template rows.
+“Screened” means that decisions to retain or exclude items after manual review
+have been added. Excluded rows remain in these four files. `Exclude` is a
+numeric flag: `0` means retained, and `1` means excluded. The Oxford tables
+contain nine excluded items; the Strasbourg tables contain one. Oxford's NRF
+table repeats each item's flag across its two template rows.
 
 ## Figure guide
 
@@ -38,7 +49,7 @@ The guide below identifies the derived measurements that are shared.
 | --- | --- |
 | **Main Figure 1** | Conceptual workflow schematic; no underlying numerical dataset. |
 | **Main Figure 2** | The nine QC swarms use the **199 retained Oxford items** in the Oxford QC CSV (`Exclude = 0`). Individual EEG and PSD data are not included. See [QC plots](#qc-plots). |
-| **Main Figure 3** | The fourth row of A and B uses paired NRF measurements from the corresponding Oxford and Strasbourg NRF CSVs. Saved estimates and intervals are given [below](#figure-3-paired-nrf-comparisons). The aggregate arrays in the first three rows are not included. |
+| **Main Figure 3** | The fourth row of A and B uses paired NRF measurements from the corresponding Oxford and Strasbourg NRF CSVs. Saved estimates and intervals are given [below](#figure-3-paired-nrf-comparisons). The numerical data behind the group-average plots in the first three rows are not included. |
 | **Main Figure 4** | Counts and individual measurements come from [jasp_data_all.csv](../jasp/data/jasp_data_all.csv). Statistical results are in [jasp_data_all.jasp](../jasp/data/jasp_data_all.jasp); the figure script also contains C's displayed summaries. See the [panel guide](#figure-4-petal-applications). |
 | **Supplementary Figure 1** | The nine QC swarms use **all 208 Oxford items**, including excluded items, in the Oxford QC CSV. Individual EEG and PSD data are not included. |
 | **Supplementary Figure 2** | Individual Petal true-event EEG and PSD data; not included. |
@@ -56,11 +67,10 @@ The guide below identifies the derived measurements that are shared.
 
 ## Reading the tables
 
-An item is one event occurrence at one EEG channel. `subjectID`, `sessionID`,
-and `runID` identify its participant and recording; `epoch_index` identifies
-the event within that recording. Import the identifiers as text to preserve
-leading zeros. The labels are specific to each dataset and should not be
-matched between Oxford and Strasbourg.
+`subjectID`, `sessionID`, and `runID` identify the participant and recording;
+`epoch_index` identifies the event within that recording. Import the identifiers
+as text to preserve leading zeros. The labels are specific to each dataset and
+should not be matched between Oxford and Strasbourg.
 
 `channel` is text (`CZ` or `Cz` here). `eventtype` distinguishes the true
 event from its internal reference:
@@ -83,7 +93,7 @@ Each QC CSV contains one row per item and these nine plotted columns:
 | --- | --- | --- |
 | `maxAbsEpoch` | Maximum absolute amplitude | µV |
 | `sdEpoch` | Population standard deviation | µV |
-| `invSdEpoch` | Inverse standard deviation, with the implemented floor | µV⁻¹ |
+| `invSdEpoch` | Inverse standard deviation, with a lower limit on the standard deviation to avoid division by zero | µV⁻¹ |
 | `MeanAbsDiffNorm` | Mean absolute successive difference after robust normalisation | Dimensionless |
 | `MaxAbsDiffNorm` | Maximum absolute successive difference after robust normalisation | Dimensionless |
 | `RobustSlopeNorm` | Absolute robust slope after normalisation | ms⁻¹ |
@@ -91,15 +101,16 @@ Each QC CSV contains one row per item and these nine plotted columns:
 | `AutoCorrLag1Neg` | One minus lag-one autocorrelation | Dimensionless |
 | `KatzFDNorm` | Katz fractal dimension after robust normalisation | Dimensionless |
 
-The swarms pool true-event and internal-reference items at Cz. Use the
-population specified in the figure guide, then use finite values from each
-feature column. Horizontal position is the feature value; vertical jitter
-separates overlapping points and is not another measurement.
+Each point in a QC swarm plot represents one true-event or internal-reference
+item at Cz. Select the items specified in the figure guide, then use each
+feature column, ignoring missing or infinite values. Horizontal position is
+the feature value; vertical jitter separates overlapping points and is not
+another measurement.
 
-The viewer fixes its comparison distributions when a session opens. Figure 2
-was captured with the retained set; Supplementary Figures 1 and 11 show the
-full candidate distributions. A screenshot's currently selected item or
-“This view” count therefore does not define its swarm population. The
+The comparison points are fixed when the viewer opens. Figure 2 shows the
+retained items; Supplementary Figures 1 and 11 show all candidate items.
+A screenshot's currently selected item or “This view” count therefore does
+not define which points appear in the swarm plots. The
 [Oxford viewer](https://github.com/simple-eeg/simple-oxford/blob/main/scripts/step_6_screen_2_viewer_rate_epochs.m)
 and [Strasbourg viewer](https://github.com/simple-eeg/simple-strasbourg/blob/main/scripts/step_6_screen_2_viewer_rate_epochs.m)
 provide the plotting details and box overlays.
@@ -107,11 +118,14 @@ provide the plotting details and box overlays.
 The Oxford [JASP CSV](../jasp/data/jasp_data_all.csv) also contains the retained
 QC measurements, in columns prefixed `HL_BL_` for internal-reference items
 and `HL_ER_` for true-event items. Excluded measurements are missing there.
-It therefore supplies Figure 2's retained values, but not the complete
-candidate distribution in Supplementary Figure 1. It contains no Strasbourg
-measurements. Use the QC CSVs in this folder for the full populations.
+It therefore supplies Figure 2's retained values, but not all the points
+in Supplementary Figure 1. It contains no Strasbourg measurements. Use the
+QC CSVs in this folder for all candidate items.
 
 ### Figure 3 paired NRF comparisons
+
+These plots compare each event's fitted response with its reference from
+the same recording.
 
 Use the numeric `fglsCoef` column, which contains NRF magnitude in µV. Select
 Cz (case-insensitive), retained rows (`Exclude = 0`), and the appropriate
@@ -124,10 +138,11 @@ template:
 
 Within each dataset, match the true and reference events using `subjectID`,
 `sessionID`, `runID`, and `channel`. Do not pair on `epoch_index`, because
-the two events have different epoch indices. Keep pairs with both finite
-measurements. Oxford has 99 retained true events and 100 retained references;
-three incomplete recording pairs are omitted. Strasbourg has 38 retained
-true events and 39 retained references; one incomplete pair is omitted.
+the two events have different epoch indices. Keep pairs only when neither
+measurement is missing or infinite. Oxford has 99 retained true events and
+100 retained references; three incomplete recording pairs are omitted.
+Strasbourg has 38 retained true events and 39 retained references; one
+incomplete pair is omitted.
 Repeated Strasbourg recordings remain separate pairs.
 
 The paired difference is **true-event magnitude minus internal-reference
@@ -156,10 +171,15 @@ All references in this section are to the Oxford
 [jasp_data_all.jasp](../jasp/data/jasp_data_all.jasp). The CSV has one row
 for each of 104 participants with time-locked EEG.
 
+The **current set** contains the 99 participants with a retained true-event
+measurement. The **published set** is the 82-participant membership used in the original
+Petal analysis. Both sets use measurements calculated by the current workflow;
+the published-set measurements were not copied from the earlier publication.
+
 | Panel | Source |
 | --- | --- |
 | 4A | Row count and `HL_ER_nNRF_mag_Screening` / `HL_ER_nNRF_mag_pub_Screening` supply the 104 available, 99 current-retained, and 82 published-retained counts. The 112 randomised total is a study constant shown in the figure and specified in the figure script; the other eight participants are not CSV rows. |
-| 4B | Cross-tabulate `trial_arm` with those two screening columns. Current retained/excluded counts are 51/3 Control and 48/2 Intervention; published retained/excluded counts are 43/11 Control and 39/11 Intervention. |
+| 4B | Count `Included` and `Excluded` participants separately for each `trial_arm`, using those two screening columns. Current retained/excluded counts are 51/3 Control and 48/2 Intervention; published retained/excluded counts are 43/11 Control and 39/11 Intervention. |
 | 4C | Saved Bayesian Mann–Whitney results in JASP; the displayed medians and 95% credible intervals are also fixed inputs in the figure script and listed below. |
 | 4D | `HL_ER_eNRF_mag`, grouped by `HL_sleep_state`, with missing values omitted: 99 observations, comprising 72 Asleep and 27 Awake. |
 | 4E | `HL_ER_nNRF_mag`, grouped by `HL_sleep_state`, with missing values omitted: the same participants, 72 Asleep and 27 Awake. |
@@ -192,8 +212,9 @@ The plotted templates are already available as MATLAB files:
 - n-NRF: [noxious_NRF_500Hz.mat](https://github.com/simple-eeg/simple-oxford/blob/main/NRFs/noxious_NRF_500Hz.mat).
 - p-NRF: [noxious_preterm_NRF_500Hz.mat](https://github.com/simple-eeg/simple-oxford/blob/main/NRFs/noxious_preterm_NRF_500Hz.mat).
 
-These are the stored mean-centred, unit-L₂ templates used for fitting.
-Their plotted amplitudes are unitless. The
+These are the stored templates used for fitting. Each has zero mean and is
+scaled so that the sum of its squared values is one. Their plotted amplitudes
+are unitless. The
 [template figure script](https://github.com/simple-eeg/simple-oxford/blob/main/scripts/step_8_gen_3_nrf_details.m)
-plots their samples and time coordinates. No duplicate template files are
-needed in this data folder.
+plots their samples and time coordinates. The files are linked here rather
+than copied into this folder.
