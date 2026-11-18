@@ -81,3 +81,8 @@ retains all 208 candidate items and their exclusion flags.
 The CSV preserves more decimal places than JASP's embedded table: the numerical
 values agree to ten significant digits, with matching category labels and
 missing values.
+
+## Licence
+
+These data and this guide are licensed under [CC BY 4.0](../LICENSE). See the
+[attribution guidance](../README.md#licence-and-attribution).

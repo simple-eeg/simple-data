@@ -50,3 +50,8 @@ To generate the example yourself, follow the
 [generator instructions](https://github.com/simple-eeg/simple-synthetic-eeg-generator#first-time-setup).
 Using the copy supplied here does not require running the generator or setting
 up its Python environment. Screening remains a manual step in SIMPLE.
+
+## Licence
+
+These data and this guide are licensed under [CC BY 4.0](../LICENSE). See the
+[attribution guidance](../README.md#licence-and-attribution).

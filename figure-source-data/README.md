@@ -217,4 +217,10 @@ scaled so that the sum of its squared values is one. Their plotted amplitudes
 are unitless. The
 [template figure script](https://github.com/simple-eeg/simple-oxford/blob/main/scripts/step_8_gen_3_nrf_details.m)
 plots their samples and time coordinates. The files are linked here rather
-than copied into this folder.
+than copied into this folder. Their [licence and original sources](https://github.com/simple-eeg/simple-oxford/blob/main/NRFs/README.md)
+are described alongside the templates.
+
+## Licence
+
+These data and this guide are licensed under [CC BY 4.0](../LICENSE). See the
+[attribution guidance](../README.md#licence-and-attribution).

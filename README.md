@@ -48,3 +48,15 @@ rows.
   and downstream analyses.
 - [simple-strasbourg](https://github.com/simple-eeg/simple-strasbourg): the
   NOCI-Prem workflow and descriptive checks.
+
+## Licence and attribution
+
+The data and documentation in this repository are licensed under
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE). You may
+copy, adapt, and redistribute them, including for commercial use. Credit the
+SIMPLE project contributors, link to this repository and the licence, and
+indicate any changes.
+For scholarly work, please also cite the accompanying SIMPLE paper.
+
+The related repositories license their software under Apache 2.0 and their
+NRF template data under CC BY 4.0; see their licence notices for the scope.
